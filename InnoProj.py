@@ -14,12 +14,6 @@ class InnovationProject:
     def average_score(self) -> float:
         return sum(self.scores) / len(self.scores)
 
-    def clearance_level(self) -> str:
-        if self.average_score() > 85:
-            return "Level 1 (Override)"
-        else:
-            return "Level 2 (Standard)"
-
     def commercialization_potential(self) -> str:
         average = self.average_score()
 
@@ -33,64 +27,183 @@ class InnovationProject:
 
 # Innovation project data
 project_list = [
-    InnovationProject("P001", "Smart Technology", "Tekno",
-                      ["Ali"], [92]),
-    InnovationProject("P002", "Neuro Assistant", "Neuro",
-                      ["Alicia"], [88]),
-    InnovationProject("P003", "Digital Innovation", "Tekno",
-                      ["Khai"], [75]),
-    InnovationProject("P004", "Invisible Security", "Inviso",
-                      ["Rudy"], [85]),
-    InnovationProject("P005", "Combat Technology", "Kombat",
-                      ["Moon"], [68])
+
+    InnovationProject(
+        "A001",
+        "AI Smart Assistant",
+        "AI",
+        ["Ali", "Aina"],
+        [92, 94, 90, 93]
+    ),
+
+    InnovationProject(
+        "A002",
+        "AI Learning System",
+        "AI",
+        ["Alicia", "Adam"],
+        [87, 88, 85, 89]
+    ),
+
+    InnovationProject(
+        "A003",
+        "AI Health Assistant",
+        "AI",
+        ["Khai", "Sara"],
+        [78, 80, 76, 79]
+    ),
+
+    InnovationProject(
+        "C001",
+        "Cyber Defence System",
+        "CyberSecurity",
+        ["Rudy", "Daniel"],
+        [95, 96, 94, 97]
+    ),
+
+    InnovationProject(
+        "C002",
+        "Secure Data Platform",
+        "CyberSecurity",
+        ["Maya", "John"],
+        [89, 91, 88, 90]
+    ),
+
+    InnovationProject(
+        "C003",
+        "Network Security Tool",
+        "CyberSecurity",
+        ["Farah", "Amir"],
+        [83, 85, 81, 84]
+    ),
+
+    InnovationProject(
+        "I001",
+        "Smart Home System",
+        "IoT",
+        ["Lina", "Hakim"],
+        [91, 93, 90, 92]
+    ),
+
+    InnovationProject(
+        "I002",
+        "Smart Agriculture System",
+        "IoT",
+        ["Nadia", "Irfan"],
+        [86, 88, 84, 87]
+    ),
+
+    InnovationProject(
+        "I003",
+        "IoT Monitoring Device",
+        "IoT",
+        ["Sofia", "Ray"],
+        [82, 84, 81, 83, 80]
+    ),
+
+    InnovationProject(
+        "W001",
+        "Online Learning Website",
+        "Web Development",
+        ["Adam", "Hana"],
+        [81, 85, 79, 83]
+    ),
+
+    InnovationProject(
+        "W002",
+        "E-Commerce Website",
+        "Web Development",
+        ["Aiman", "Lisa"],
+        [87, 84, 89, 86]
+    ),
+
+    InnovationProject(
+        "W003",
+        "Student Portal",
+        "Web Development",
+        ["Izzat", "Mira"],
+        [75, 78, 73, 80]
+    )
 ]
 
 
 # Functional features
-scores = list(map(lambda p: p.average_score(), project_list))
 
+# Calculate average score for all projects
+scores = list(
+    map(lambda p: p.average_score(), project_list)
+)
+
+# Calculate overall average score
 avg_score = sum(scores) / len(scores)
 
-level_1_projects = list(
-    filter(lambda p: p.clearance_level() == "Level 1 (Override)", project_list)
+
+# Find projects with average score >= 80
+top_projects = list(
+    filter(
+        lambda p: p.average_score() >= 80,
+        project_list
+    )
 )
 
-top_projects = list(
-    filter(lambda p: p.average_score() >= 80, project_list)
-)
 
 print(f"Average Team Score: {avg_score:.2f}")
-print("Level 1 Projects:", [p.title for p in level_1_projects])
-print("Top-Tier Projects:", [p.title for p in top_projects])
+
+print(
+    "Top-Tier Projects:",
+    [p.title for p in top_projects]
+)
 
 
 # Pandas Tactical Table
+
 data = {
     "Project ID": [p.project_id for p in project_list],
+
     "Title": [p.title for p in project_list],
+
     "Category": [p.category for p in project_list],
-    "Team Members": [", ".join(p.team_members) for p in project_list],
-    "Average Score": [p.average_score() for p in project_list],
-    "Clearance Level": [p.clearance_level() for p in project_list],
-    "Commercialization Potential":
-        [p.commercialization_potential() for p in project_list]
+
+    "Team Members": [
+        ", ".join(p.team_members)
+        for p in project_list
+    ],
+
+    "Average Score": [
+        p.average_score()
+        for p in project_list
+    ],
+
+    "Commercialization Potential": [
+        p.commercialization_potential()
+        for p in project_list
+    ]
 }
+
 
 df = pd.DataFrame(data)
 
-print("\n-- MATA Tactical Summary Table --")
+
+print("\n-- Project Details --")
 print(df.to_string(index=False))
 
 
 # Matplotlib Bar Chart
-plt.bar(df["Title"], df["Average Score"])
 
-plt.title("Innovation Project Scores")
-plt.xlabel("Project")
+plt.bar(
+    df["Project ID"],
+    df["Average Score"]
+)
+
+plt.title("Innovation Project Average Scores")
+
+plt.xlabel("Project ID")
+
 plt.ylabel("Average Score")
 
 plt.ylim(0, 100)
-plt.xticks(rotation=20)
+
+plt.xticks(rotation=45)
 
 plt.tight_layout()
+
 plt.show()
